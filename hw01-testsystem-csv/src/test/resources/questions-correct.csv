@@ -1,0 +1,5 @@
+1,Are you ok?,1,Yes,true,2,No,false
+2,Who are you?,1,Nobody,false,2,Anybody,true
+3,How old are you?,1,10,false,2,30,true,3,50,false,4,70,false
+4,Can anybody help you?,1,Yes,true,2,No,false
+5,Who is studying Java right now?,1,I am,true,2,He is,true,3,She is,true,4,They are,true
