@@ -17,8 +17,8 @@ class CsvQuestionDaoTest {
     @Test
     @DisplayName("parse bad csv file with an exception")
     public void readIncorrectQuestions(){
-        assertThrows(CsvQuestionDaoIncorrectFileException.class, () -> new CsvQuestionDao("/questions-incorrect-1.csv"));
-        assertThrows(CsvQuestionDaoIncorrectFileException.class, () -> new CsvQuestionDao("/questions-incorrect-2.csv"));
+        assertThrows(CsvQuestionDaoParsingException.class, () -> new CsvQuestionDao("/questions-incorrect-1.csv"));
+        assertThrows(CsvQuestionDaoParsingException.class, () -> new CsvQuestionDao("/questions-incorrect-2.csv"));
     }
 
 }

@@ -1,7 +1,5 @@
 package ru.otus.merets.domain;
 
-import ru.otus.merets.dao.QuestionDao;
-
 import java.util.List;
 
 public class Question {
@@ -30,9 +28,8 @@ public class Question {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append( "# "+ id +
-                ". " + message );
-        answers.stream().forEach( a -> stringBuilder.append("\n"+a.toString()));
+        stringBuilder.append("# ").append(id).append(". ").append(message);
+        answers.forEach(a -> stringBuilder.append("\n").append(a.toString()));
         return stringBuilder.toString();
     }
 }
