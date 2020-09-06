@@ -2,25 +2,21 @@ package ru.otus.merets.dao;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 import ru.otus.merets.domain.Answer;
 import ru.otus.merets.domain.Question;
 
 import java.io.*;
 import java.util.*;
 
+@Repository
 public class CsvQuestionDao implements QuestionDao {
     private final List<Question> questions;
 
-    public CsvQuestionDao(String resource) {
+    public CsvQuestionDao(@Value("${question.path}")String resource) {
         questions = new ArrayList<>();
         parseCsv(resource);
-    }
-
-    public Optional<Question> getQuestionById(String id) {
-        return questions
-                .stream()
-                .filter(q -> q.getId().equals(id))
-                .findFirst();
     }
 
     @Override

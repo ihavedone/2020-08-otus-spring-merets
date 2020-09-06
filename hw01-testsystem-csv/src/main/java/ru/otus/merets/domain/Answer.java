@@ -11,6 +11,14 @@ public class Answer {
         this.isRight = isRight;
     }
 
+    public Boolean isCorrect(){
+        return isRight;
+    }
+
+    public String getId(){
+        return id;
+    }
+
     @Override
     public String toString() {
         return " - " + id +
