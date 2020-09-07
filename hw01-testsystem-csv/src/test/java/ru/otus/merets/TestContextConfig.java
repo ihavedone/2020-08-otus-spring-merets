@@ -20,7 +20,7 @@ public class TestContextConfig {
     @Bean
     @Primary
     IOService ioService(){
-        return Mockito.mock(ConsoleIOService.class);
+        return Mockito.mock(IOServiceConsole.class);
     }
 
     @Bean
