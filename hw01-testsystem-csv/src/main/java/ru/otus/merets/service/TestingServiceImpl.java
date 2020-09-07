@@ -13,23 +13,15 @@ public class TestingServiceImpl implements TestingService {
     private String name;
     private Integer rank = 0;
 
-    @Value("${message.passed}")
-    private String MESSAGE_PASSED;
-
-    @Value("${message.failed}")
-    private String MESSAGE_FAILED;
-
-    @Value("${message.askName}")
-    private String MESSAGE_ASK_NAME;
-
-    @Value("${message.banner}")
-    private String MESSAGE_BANNER;
-
-    @Value("${message.result}")
-    private String MESSAGE_RESULT;
+    private static final String MESSAGE_PASSED = "Congratulations! You passed the exam.";
+    private static final String MESSAGE_FAILED = "We are so sorry... You failed the exam. Try one more time";
+    private static final String MESSAGE_ASK_NAME = "Please enter your name and press Enter: ";
+    private static final String MESSAGE_BANNER = "After each question you should enter your answers " +
+            "(one or several). In case of many correct answers, please use space like a separator, e.g. '1 2 3'";
+    private static final String MESSAGE_RESULT = "%s, your score is %d from %d (necessary at least %d)";
 
     @Value("${exam.passScore}")
-    private Integer passScore;
+    private Integer passScore = 3;
 
     public TestingServiceImpl(QuestionService questionService, IOService iOService) {
         this.questionService = questionService;
