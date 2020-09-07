@@ -60,9 +60,4 @@ public class TestingServiceImpl implements TestingService {
             rank++;
         }
     }
-
-    @Override
-    public Integer getRank(){
-        return rank;
-    }
 }
