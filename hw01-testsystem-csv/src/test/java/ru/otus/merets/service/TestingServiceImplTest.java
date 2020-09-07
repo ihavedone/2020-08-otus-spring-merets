@@ -33,7 +33,7 @@ class TestingServiceImplTest {
     private IOService iOService;
 
     @Autowired
-    TestingService testingService;
+    private TestingService testingService;
 
     @Test
     @DisplayName("calculate correct answers")
