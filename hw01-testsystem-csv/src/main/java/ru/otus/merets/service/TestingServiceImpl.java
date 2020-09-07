@@ -10,8 +10,6 @@ import java.util.*;
 public class TestingServiceImpl implements TestingService {
     private final QuestionService questionService;
     private final IOService iOService;
-    private String name;
-    private Integer rank = 0;
 
     private static final String MESSAGE_PASSED = "Congratulations! You passed the exam.";
     private static final String MESSAGE_FAILED = "We are so sorry... You failed the exam. Try one more time";
@@ -28,18 +26,20 @@ public class TestingServiceImpl implements TestingService {
         this.iOService = iOService;
     }
 
-    public void getName() {
+    public String getName() {
         iOService.printMessage(MESSAGE_ASK_NAME);
-        name = iOService.getString();
+        return iOService.getString();
     }
 
     @Override
     public void startTest() {
-        getName();
+        String name = getName();
+        long rank;
+
         iOService.printMessage(MESSAGE_BANNER);
 
         List<Question> questionList = questionService.getAllQuestions();
-        questionList.forEach(this::ask);
+        rank = questionList.stream().filter(this::ask).count();
 
         iOService.printMessage(String.format(MESSAGE_RESULT, name, rank, questionList.size(), passScore));
         if (rank >= passScore) {
@@ -50,14 +50,15 @@ public class TestingServiceImpl implements TestingService {
     }
 
     @Override
-    public void ask(Question question) {
+    public boolean ask(Question question) {
         iOService.printMessage(question);
         String answer = iOService.getString();
         List<String> correctAnswers = questionService.getCorrectAnswers(question);
         List<String> usersAnswers = Arrays.asList(answer.split(" "));
 
         if (new HashSet<>(correctAnswers).equals(new HashSet<>(usersAnswers))) {
-            rank++;
+            return true;
         }
+        return false;
     }
 }
