@@ -1,6 +1,7 @@
 package ru.otus.merets;
 
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -23,9 +24,12 @@ public class TestContextConfig {
         return Mockito.mock(IOServiceConsole.class);
     }
 
+    @Value("${exam.passScore}")
+    Integer passScore;
+
     @Bean
     @Primary
     TestingService testingService(){
-        return new TestingServiceImpl(questionService(),ioService());
+        return new TestingServiceImpl(questionService(),ioService(), passScore);
     }
 }

@@ -14,10 +14,8 @@ import ru.otus.merets.domain.Question;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -59,10 +57,9 @@ class TestingServiceImplTest {
 
         ArgumentCaptor<Object> requestCaptor = ArgumentCaptor.forClass(Object.class);
         verify( iOService, times(5) ).printMessage(requestCaptor.capture());
-        Assertions.assertEquals(true, requestCaptor.getAllValues()
+        Assertions.assertTrue(requestCaptor.getAllValues()
                 .stream()
-                .filter( s -> s.toString().equals(MESSAGE_PASSED))
-                .findFirst().isPresent());
+                .anyMatch(s -> s.toString().equals(MESSAGE_PASSED)));
 
     }
 }

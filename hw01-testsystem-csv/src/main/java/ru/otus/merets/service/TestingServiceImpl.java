@@ -18,12 +18,13 @@ public class TestingServiceImpl implements TestingService {
             "(one or several). In case of many correct answers, please use space like a separator, e.g. '1 2 3'";
     private static final String MESSAGE_RESULT = "%s, your score is %d from %d (necessary at least %d)";
 
-    @Value("${exam.passScore}")
-    private Integer passScore = 3;
 
-    public TestingServiceImpl(QuestionService questionService, IOService iOService) {
+    private final Integer passScore;
+
+    public TestingServiceImpl(QuestionService questionService, IOService iOService, @Value("${exam.passScore}") Integer passScore) {
         this.questionService = questionService;
         this.iOService = iOService;
+        this.passScore = passScore;
     }
 
     public String getName() {
@@ -56,9 +57,6 @@ public class TestingServiceImpl implements TestingService {
         List<String> correctAnswers = questionService.getCorrectAnswers(question);
         List<String> usersAnswers = Arrays.asList(answer.split(" "));
 
-        if (new HashSet<>(correctAnswers).equals(new HashSet<>(usersAnswers))) {
-            return true;
-        }
-        return false;
+        return new HashSet<>(correctAnswers).equals(new HashSet<>(usersAnswers));
     }
 }
