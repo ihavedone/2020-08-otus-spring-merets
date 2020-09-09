@@ -17,14 +17,6 @@ public class Question {
         return answers;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public String getId() {
-        return id;
-    }
-
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
