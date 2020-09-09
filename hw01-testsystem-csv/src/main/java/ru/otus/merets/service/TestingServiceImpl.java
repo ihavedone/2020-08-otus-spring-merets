@@ -27,7 +27,7 @@ public class TestingServiceImpl implements TestingService {
         this.passScore = passScore;
     }
 
-    public String getName() {
+    private String getName() {
         iOService.printMessage(MESSAGE_ASK_NAME);
         return iOService.getString();
     }

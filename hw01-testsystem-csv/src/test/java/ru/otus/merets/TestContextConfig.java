@@ -25,7 +25,7 @@ public class TestContextConfig {
     }
 
     @Value("${exam.passScore}")
-    Integer passScore;
+    private Integer passScore;
 
     @Bean
     @Primary
