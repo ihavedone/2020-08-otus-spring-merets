@@ -1,0 +1,4 @@
+exam:
+  path: "questions.csv"
+  score: 3
+  locale: ru_RU
