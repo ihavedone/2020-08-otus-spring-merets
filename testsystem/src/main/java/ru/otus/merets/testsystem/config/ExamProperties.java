@@ -33,4 +33,11 @@ public class ExamProperties {
     public void setScore(Integer score) {
         this.score = score;
     }
+
+    public String getLocalizedPath(){
+        return "/questions/"
+                .concat(path)
+                .concat("_".concat(locale.toString()))
+                .concat(".csv");
+    }
 }

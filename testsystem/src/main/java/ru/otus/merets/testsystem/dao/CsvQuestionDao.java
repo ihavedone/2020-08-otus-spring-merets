@@ -17,12 +17,10 @@ import java.util.List;
 @Repository
 public class CsvQuestionDao implements QuestionDao {
     private final List<Question> questions;
-    private final ExamProperties examProperties;
 
     public CsvQuestionDao(ExamProperties examProperties) {
-        this.examProperties = examProperties;
         questions = new ArrayList<>();
-        parseCsv(examProperties.getPath());
+        parseCsv(examProperties.getLocalizedPath());
     }
 
     @Override
@@ -31,17 +29,17 @@ public class CsvQuestionDao implements QuestionDao {
     }
 
     private void parseCsv(String resource) {
-        InputStream inputStream = getClass().getResourceAsStream("/questions/".concat(examProperties.getLocale().toString()).concat("/".concat(resource)));
+        InputStream inputStream = getClass().getResourceAsStream( resource );
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
 
         try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
             Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(reader);
             for (CSVRecord record : records) {
                 if (record.size() < 5) {
-                    throw new CsvQuestionDaoParsingException("CSV file should contain more than 4 columns");
+                    throw new LoadingQuestionDaoException("CSV file should contain more than 4 columns");
                 }
                 if ((record.size() - 2) % 3 != 0) {
-                    throw new CsvQuestionDaoParsingException("Each of answers should contain exactly 3 columns");
+                    throw new LoadingQuestionDaoException("Each of answers should contain exactly 3 columns");
                 }
                 List<Answer> answers = new ArrayList<>();
                 for (int i = 2; i < record.size(); i += 3) {
@@ -50,7 +48,7 @@ public class CsvQuestionDao implements QuestionDao {
                 questions.add(new Question(record.get(0), record.get(1), answers));
             }
         } catch (Exception e) {
-            throw new CsvQuestionDaoParsingException("Incorrect CSV file", e);
+            throw new LoadingQuestionDaoException("Incorrect CSV file", e);
         }
     }
 }

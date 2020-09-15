@@ -31,17 +31,17 @@ class CsvQuestionDaoTest {
     @Test
     @DisplayName("parse csv file correctly")
     public void readCorrectCsv(){
-        given(examProperties.getPath()).willReturn("questions-correct.csv" );
+        given(examProperties.getLocalizedPath()).willReturn("/questions/questions-correct_en.csv" );
         QuestionDao questionDao = new CsvQuestionDao(examProperties);
     }
 
     @Test
     @DisplayName("parse bad csv file with an exception")
     public void readIncorrectQuestions(){
-        given(examProperties.getPath()).willReturn("questions-incorrect-1.csv" );
-        assertThrows(CsvQuestionDaoParsingException.class, () -> new CsvQuestionDao( examProperties));
-        given(examProperties.getPath()).willReturn("questions-incorrect-2.csv" );
-        assertThrows(CsvQuestionDaoParsingException.class, () -> new CsvQuestionDao( examProperties));
+        given(examProperties.getLocalizedPath()).willReturn("/questions/questions-incorrect-1_en.csv" );
+        assertThrows(LoadingQuestionDaoException.class, () -> new CsvQuestionDao( examProperties));
+        given(examProperties.getLocalizedPath()).willReturn("/questions/questions-incorrect-2_en.csv" );
+        assertThrows(LoadingQuestionDaoException.class, () -> new CsvQuestionDao( examProperties));
     }
 
 }

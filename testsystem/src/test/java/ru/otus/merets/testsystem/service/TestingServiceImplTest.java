@@ -17,6 +17,7 @@ import ru.otus.merets.testsystem.domain.Question;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -42,6 +43,7 @@ class TestingServiceImplTest {
     @Test
     @DisplayName("calculate correct answers")
     void askTest() {
+
         Answer answer = new Answer("1","Answer #1",true);
 
         List<Answer> answers = new ArrayList<>();
@@ -60,6 +62,7 @@ class TestingServiceImplTest {
         given(iOService.getString()).willReturn("1");
         given(examProperties.getScore()).willReturn(1);
         given(examProperties.getLocale()).willReturn( Locale.forLanguageTag("en") );
+        given(examProperties.getLocalizedPath()).willReturn("/questions/questions_en.csv" );
 
         testingService.startTest();
 
@@ -67,6 +70,7 @@ class TestingServiceImplTest {
         verify( iOService, times(5) ).printMessage(requestCaptor.capture());
         Assertions.assertTrue(requestCaptor.getAllValues()
                 .stream()
+                .filter(Objects::nonNull)
                 .anyMatch(s -> s.toString().equals(MESSAGE_PASSED)));
 
     }
