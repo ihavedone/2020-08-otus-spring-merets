@@ -1,6 +1,8 @@
 package ru.otus.merets.testsystem.service;
 
 
+import org.springframework.shell.standard.ShellComponent;
+import org.springframework.shell.standard.ShellMethod;
 import org.springframework.stereotype.Service;
 import ru.otus.merets.testsystem.config.ExamProperties;
 import ru.otus.merets.testsystem.domain.Question;
@@ -10,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Service
+@ShellComponent
 public class TestingServiceImpl implements TestingService {
     private final QuestionService questionService;
     private final IOService iOService;
@@ -31,6 +34,7 @@ public class TestingServiceImpl implements TestingService {
     }
 
     @Override
+    @ShellMethod(value = "Start the test", key = {"go", "start"})
     public void startTest() {
         String name = getName();
         long rank;

@@ -1,45 +1,43 @@
 package ru.otus.merets.testsystem.dao;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.otus.merets.testsystem.TestContextConfig;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Configuration;
 import ru.otus.merets.testsystem.config.ExamProperties;
-
-import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestContextConfig.class})
-@DisplayName("TestingServiceImpl should ")
+@SpringBootTest
+@DisplayName("CsvQuestionDao should ")
 class CsvQuestionDaoTest {
 
-    @Autowired
-    private ExamProperties examProperties;
-
-    @BeforeEach
-    public void init(){
-        given(examProperties.getLocale()).willReturn( Locale.forLanguageTag("en") );
+    @Configuration
+    static class NestedContext{
     }
 
+    @MockBean
+    ExamProperties examProperties;
+
     @Test
-    @DisplayName("parse csv file correctly")
-    public void readCorrectCsv(){
+    @DisplayName("load correct csv file without any errors")
+    public void loadCorrectCsv(){
         given(examProperties.getLocalizedPath()).willReturn("/questions/questions-correct_en.csv" );
         QuestionDao questionDao = new CsvQuestionDao(examProperties);
     }
 
     @Test
-    @DisplayName("parse bad csv file with an exception")
-    public void readIncorrectQuestions(){
+    @DisplayName("load bad csv with an insufficient quantity of columns with an exception")
+    public void loadBadCsvWithInsufficientQuantityOfColumns(){
         given(examProperties.getLocalizedPath()).willReturn("/questions/questions-incorrect-1_en.csv" );
         assertThrows(LoadingQuestionDaoException.class, () -> new CsvQuestionDao( examProperties));
+    }
+
+    @Test
+    @DisplayName("load bad csv with a large quantity of columns with an exception")
+    public void loadBadCsvWithLargeAmountOfColumns(){
         given(examProperties.getLocalizedPath()).willReturn("/questions/questions-incorrect-2_en.csv" );
         assertThrows(LoadingQuestionDaoException.class, () -> new CsvQuestionDao( examProperties));
     }
