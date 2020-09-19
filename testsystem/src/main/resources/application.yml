@@ -1,0 +1,9 @@
+exam:
+  path: questions
+  score: 3
+  locale: ru_RU
+
+spring:
+  messages:
+    basename: i18n/bundle
+    encoding: UTF-8

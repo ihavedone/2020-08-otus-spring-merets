@@ -1,0 +1,9 @@
+exam:
+  path: questions
+  score: 1
+  locale: en
+
+spring:
+  messages:
+    basename: i18n/bundle
+    encoding: UTF-8

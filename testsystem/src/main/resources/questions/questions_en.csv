@@ -1,0 +1,5 @@
+1,What relates to application security methodology,1,BSIMM,true,2,OWASP Top 10,false
+2,Is it possible to use digits instead of IP-address (e.g. http://3258611659/ ),1,No,false,2,Yes,true
+3,TTP is,1,Tristetraprolin,false,2,Tactics technics and procedures,true,3,Thrombotic thrombocytopenic purpura,false,4,Time-Triggered Protocol,false
+4,Stackoverflow is typical for,1,C++,true,2,JavaScript,false
+5,Which kinds of hackers exist,1,Black,true,2,White,true,3,Blue,true,4,Green,true
