@@ -22,7 +22,6 @@ public class TestingServiceImpl implements TestingService {
         this.iOService = iOService;
         this.examProperties = examProperties;
         this.l18nMessageService = l18nMessageService;
-        this.l18nMessageService.setDefaultLocale(examProperties.getLocale());
     }
 
     private String getName() {

@@ -1,77 +1,67 @@
 package ru.otus.merets.testsystem.service;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.otus.merets.testsystem.TestContextConfig;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.MessageSource;
 import ru.otus.merets.testsystem.config.ExamProperties;
+import ru.otus.merets.testsystem.dao.CsvQuestionDao;
 import ru.otus.merets.testsystem.domain.Answer;
 import ru.otus.merets.testsystem.domain.Question;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestContextConfig.class})
+@SpringBootTest
+@EnableConfigurationProperties(ExamProperties.class)
 @DisplayName("TestingServiceImpl should ")
 class TestingServiceImplTest {
     private static final String MESSAGE_PASSED = "Congratulations! You passed the exam.";
+    private static final String CORRECT_ANSWER_ID = "1";
 
-    @Autowired
+    @MockBean
     private QuestionService questionService;
 
-    @Autowired
+    @MockBean
     private IOService iOService;
 
+    @MockBean
+    private L18nMessageService l18nMessageService;
+
     @Autowired
-    private TestingService testingService;
+    private CsvQuestionDao csvQuestionDao;
 
     @Autowired
     private ExamProperties examProperties;
 
+    @Autowired
+    private TestingService testingService;
+
     @Test
     @DisplayName("calculate correct answers")
-    void askTest() {
+    void calculateCorrectAnswers() {
+        Answer answer = new Answer(CORRECT_ANSWER_ID, "Answer #1", true);
+        Question question = new Question("1", "Question #1", Arrays.asList(answer));
 
-        Answer answer = new Answer("1","Answer #1",true);
-
-        List<Answer> answers = new ArrayList<>();
-        answers.add(answer);
-
-        Question question = new Question("1","Question #1", answers);
-
-        List<String> correctAnswers = new ArrayList<>();
-        correctAnswers.add("1");
-
-        List<Question> questions = new ArrayList<>();
-        questions.add(question);
-
-        given(questionService.getAllQuestions()).willReturn(questions);
-        given(questionService.getCorrectAnswers(any())).willReturn(correctAnswers);
+        given(l18nMessageService.getLocalizedMessage("messages.greeting")).willReturn(".");
+        given(l18nMessageService.getLocalizedMessage("messages.passed")).willReturn(MESSAGE_PASSED);
+        given(questionService.getAllQuestions()).willReturn(Arrays.asList(question));
+        given(questionService.getCorrectAnswers(any())).willReturn( Arrays.asList(CORRECT_ANSWER_ID) );
         given(iOService.getString()).willReturn("1");
-        given(examProperties.getScore()).willReturn(1);
-        given(examProperties.getLocale()).willReturn( Locale.forLanguageTag("en") );
-        given(examProperties.getLocalizedPath()).willReturn("/questions/questions_en.csv" );
 
         testingService.startTest();
 
         ArgumentCaptor<Object> requestCaptor = ArgumentCaptor.forClass(Object.class);
-        verify( iOService, times(5) ).printMessage(requestCaptor.capture());
-        Assertions.assertTrue(requestCaptor.getAllValues()
-                .stream()
-                .filter(Objects::nonNull)
-                .anyMatch(s -> s.toString().equals(MESSAGE_PASSED)));
+        verify(iOService, times(5)).printMessage(requestCaptor.capture());
 
+        assertThat( requestCaptor.getAllValues() ).contains(MESSAGE_PASSED);
     }
 }

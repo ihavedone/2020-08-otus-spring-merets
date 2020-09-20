@@ -2,27 +2,21 @@ package ru.otus.merets.testsystem.service;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-
-import java.util.Locale;
+import ru.otus.merets.testsystem.config.ExamProperties;
 
 @Service
 public class L18nMessageServiceImpl implements L18nMessageService {
 
     private final MessageSource messageSource;
-    private Locale locale;
+    private final ExamProperties examProperties;
 
-    public L18nMessageServiceImpl(MessageSource messageSource) {
+    public L18nMessageServiceImpl(MessageSource messageSource, ExamProperties examProperties) {
         this.messageSource = messageSource;
-        this.locale = Locale.ENGLISH;
+        this.examProperties = examProperties;
     }
 
     @Override
     public String getLocalizedMessage(String label, String... params) {
-        return messageSource.getMessage(label, params.length == 0 ? null : params, locale);
-    }
-
-    @Override
-    public void setDefaultLocale(Locale locale) {
-        this.locale = locale;
+        return messageSource.getMessage(label, params.length == 0 ? null : params, examProperties.getLocale());
     }
 }
