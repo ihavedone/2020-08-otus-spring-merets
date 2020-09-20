@@ -19,7 +19,7 @@ class CsvQuestionDaoTest {
     }
 
     @MockBean
-    ExamProperties examProperties;
+    private ExamProperties examProperties;
 
     @Test
     @DisplayName("load correct csv file without any errors")

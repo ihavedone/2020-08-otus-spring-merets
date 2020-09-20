@@ -37,9 +37,6 @@ class TestingServiceImplTest {
     private L18nMessageService l18nMessageService;
 
     @Autowired
-    private MessageSource messageSource;
-
-    @Autowired
     private CsvQuestionDao csvQuestionDao;
 
     @Autowired
