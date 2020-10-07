@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("BookDaoJdbc should ")
 @JdbcTest
-@Import(BookDaoJdbc.class)
+@Import({BookDaoJdbc.class, AuthorDaoJdbc.class, GenreDaoJdbc.class})
 class BookDaoJdbcTest {
     private static final String TEST_BOOK_NAME = "TestBook";
     private static final String NEW_BOOK_CAPTION = "New caption";
