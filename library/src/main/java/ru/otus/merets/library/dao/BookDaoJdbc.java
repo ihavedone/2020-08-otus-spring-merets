@@ -74,43 +74,20 @@ public class BookDaoJdbc implements BookDao {
         Set<Genre> genres = genreDao.getAll();
 
         List<Pair<Long, Long>> books_authors = namedJdbc.query("SELECT " +
-                        "b.id key, " +
+                        "ba.book_id key, " +
                         "ba.author_id value " +
-                        "FROM book b LEFT JOIN books_authors ba ON ba.book_id = b.id ",
+                        "FROM books_authors ba",
                 new KeyValueMapper());
 
         List<Pair<Long, Long>> books_genres = namedJdbc.query("SELECT " +
-                        "b.id key, " +
+                        "bg.book_id key, " +
                         "bg.genre_id value " +
-                        "FROM book b LEFT JOIN books_genres bg ON bg.book_id = b.id ",
+                        "FROM books_genres bg",
                 new KeyValueMapper());
 
-        books.forEach((b) -> {
-            b.getAuthors().addAll(
-                    authors
-                            .stream()
-                            .filter((a) -> books_authors
-                                    .stream()
-                                    .filter((p) -> {
-                                        return p.getKey() == b.getId();
-                                    })
-                                    .map(Pair::getValue)
-                                    .collect(Collectors.toList())
-                                    .contains(a.getId()))
-                            .collect(Collectors.toList()));
-            b.getGenres().addAll(
-                    genres
-                            .stream()
-                            .filter((a) -> books_genres
-                                    .stream()
-                                    .filter((p) -> {
-                                        return p.getKey() == b.getId();
-                                    })
-                                    .map(Pair::getValue)
-                                    .collect(Collectors.toList())
-                                    .contains(a.getId()))
-                            .collect(Collectors.toList()));
-        });
+        mapAuthors(books, authors, books_authors);
+        mapGenres(books, genres, books_genres);
+
         return books;
     }
 
@@ -134,6 +111,34 @@ public class BookDaoJdbc implements BookDao {
         insertBooksAuthors(book);
         insertBooksGenres(book);
     }
+
+    private void mapGenres(List<Book> books, Set<Genre> genres, List<Pair<Long, Long>> links){
+        books.forEach((b) -> b.getGenres().addAll(
+                genres
+                        .stream()
+                        .filter((a) -> links
+                                .stream()
+                                .filter((p) -> p.getKey().equals(b.getId()))
+                                .map(Pair::getValue)
+                                .collect(Collectors.toList())
+                                .contains(a.getId()))
+                        .collect(Collectors.toList())));
+    }
+
+    private void mapAuthors(List<Book> books, Set<Author> authors, List<Pair<Long, Long>> links){
+        books.forEach((b) -> b.getAuthors().addAll(
+                authors
+                        .stream()
+                        .filter((a) -> links
+                                .stream()
+                                .filter((p) -> p.getKey().equals(b.getId()))
+                                .map(Pair::getValue)
+                                .collect(Collectors.toList())
+                                .contains(a.getId()))
+                        .collect(Collectors.toList())));
+    }
+
+
 
     private void insertBooksAuthors(Book book) {
         if (book.getAuthors() == null) {

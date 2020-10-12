@@ -6,6 +6,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class Pair<T1,T2> {
-    private T1 key;
-    private T2 value;
+    private final T1 key;
+    private final T2 value;
 }

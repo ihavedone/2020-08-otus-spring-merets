@@ -17,13 +17,6 @@ public class AuthorDaoJdbc implements AuthorDao {
         this.namedJdbc = namedJdbc;
     }
 
-    private static final class AuthorMapper implements RowMapper<Author> {
-        @Override
-        public Author mapRow(ResultSet resultSet, int i) throws SQLException {
-            return new Author(resultSet.getLong("id"), resultSet.getString("name"));
-        }
-    }
-
     @Override
     public Set<Author> getAll() {
         return new HashSet<>(namedJdbc.query("SELECT a.id, a.name FROM author a", new AuthorMapper()));
@@ -34,5 +27,12 @@ public class AuthorDaoJdbc implements AuthorDao {
         return new HashSet<>(namedJdbc.query("SELECT a.id, a.name FROM author a WHERE a.id IN (:ids)",
                 Map.of("ids", ids),
                 new AuthorMapper()));
+    }
+
+    private static final class AuthorMapper implements RowMapper<Author> {
+        @Override
+        public Author mapRow(ResultSet resultSet, int i) throws SQLException {
+            return new Author(resultSet.getLong("id"), resultSet.getString("name"));
+        }
     }
 }
