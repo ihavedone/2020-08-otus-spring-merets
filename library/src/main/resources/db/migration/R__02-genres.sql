@@ -1,4 +1,4 @@
-INSERT INTO genre (id, name)
+INSERT INTO genres (id, name)
 VALUES (1, 'Comedy'),
        (2, 'Historical'),
        (3, 'Drama'),

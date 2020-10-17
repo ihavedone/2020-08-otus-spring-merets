@@ -1,4 +1,4 @@
-INSERT INTO author (id, name)
+INSERT INTO authors (id, name)
 VALUES (1, 'Leo Tolstoy'),
        (2, 'Bjarne Stroustrup'),
        (3, 'Julian Rowling'),

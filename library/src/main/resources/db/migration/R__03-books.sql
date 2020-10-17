@@ -1,4 +1,4 @@
-INSERT INTO book (id, caption)
+INSERT INTO books (id, caption)
 VALUES (1, 'War and Peace'),
        (2, 'Programming: Principles and Practice Using C++ (2nd Edition)'),
        (3, 'The Idiot'),

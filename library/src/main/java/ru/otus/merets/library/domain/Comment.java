@@ -6,17 +6,20 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "authors")
-public class Author {
+@Table(name = "comments")
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id = 0L;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "text")
+    private String text;
+
+    @Column(name="book_id")
+    private Long book_id;
 }

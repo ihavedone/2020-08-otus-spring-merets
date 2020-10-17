@@ -36,7 +36,16 @@ public class ManagerService {
     @ShellMethod(value="update the book", key = {"book-update"})
     public void updateBook(){
         bookService.updateBook();
+    }
 
+    @ShellMethod(value="comment the book", key = {"book-comment-add"})
+    public void commentBook(){
+        bookService.addComment();
+    }
+
+    @ShellMethod(value="delete comment", key = {"book-comment-delete"})
+    public void deleteBookComment(){
+        bookService.deleteComment();
     }
 
 }
