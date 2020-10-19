@@ -16,8 +16,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void addComment() {
-        Book book = bookService.select();
+    public void add() {
+        Book book = bookService.getViaUI();
         ioService.printMessage("Enter your comment: ");
         String comment = ioService.getString();
         commentRepository.save(new Comment(0L, comment, book));
@@ -25,19 +25,19 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void deleteComment() {
-        commentRepository.delete(select());
+    public void delete() {
+        commentRepository.delete(getViaUI());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public void showComment() {
+    public void print() {
         commentRepository.findAll().forEach(ioService::printMessage);
-        ioService.printMessage( select() );
+        ioService.printMessage( getViaUI() );
     }
 
     @Override
-    public Comment select() {
+    public Comment getViaUI() {
         ioService.printMessage("Enter comment's id: ");
         String value = ioService.getString();
         return commentRepository.findById(

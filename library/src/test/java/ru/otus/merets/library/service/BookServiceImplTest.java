@@ -1,5 +1,6 @@
 package ru.otus.merets.library.service;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,15 +9,22 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.merets.library.domain.Book;
 import ru.otus.merets.library.repository.BookRepository;
 
+import java.util.HashSet;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
+@DisplayName("BookServiceImpl should ")
 class BookServiceImplTest {
     private static final String NEW_BOOK_CAPTION = "new book caption";
-    private static final Long ID_BOOK_TO_DELETE = 1L;
+    private static final String NEW_BOOK_ID_OF_AUTHORS = "1";
+    private static final String NEW_BOOK_ID_OF_GENRES = "1";
+    private static final String DELETE_BOOK_ID = "2";
 
     @MockBean
     private IOService ioService;
@@ -28,13 +36,33 @@ class BookServiceImplTest {
     private BookServiceImpl bookService;
 
     @Test
-    void addNewBook() {
-        given( ioService.getString() ).willReturn(NEW_BOOK_CAPTION, "1", "1");
-        bookService.addNewBook();
+    @DisplayName(" add a new book")
+    void shouldAddNewBook() {
+        given(ioService.getString()).willReturn(NEW_BOOK_CAPTION, NEW_BOOK_ID_OF_AUTHORS, NEW_BOOK_ID_OF_GENRES);
+        bookService.add();
 
         ArgumentCaptor<Book> requestCaptor = ArgumentCaptor.forClass(Book.class);
-        verify(bookRepository, times(1)).save( requestCaptor.capture() );
+        verify(bookRepository, times(1)).save(requestCaptor.capture());
 
-        assertThat( requestCaptor.getValue().getCaption() ).isEqualTo(NEW_BOOK_CAPTION);
+        assertThat(requestCaptor.getValue().getCaption()).isEqualTo(NEW_BOOK_CAPTION);
+    }
+
+    @Test
+    @DisplayName(" delete the book")
+    void shouldDeleteBook() {
+        given(ioService.getString()).willReturn(DELETE_BOOK_ID);
+        given(bookRepository.findById(any())).willReturn(
+                Optional.of(
+                        new Book(Long.parseLong(DELETE_BOOK_ID), "it does not matter", new HashSet<>(), new HashSet<>())
+                ));
+        bookService.delete();
+
+        ArgumentCaptor<Long> requestCaptorId = ArgumentCaptor.forClass(Long.class);
+        verify(bookRepository, times(1)).findById(requestCaptorId.capture());
+
+        ArgumentCaptor<Book> requestCaptor = ArgumentCaptor.forClass(Book.class);
+        verify(bookRepository, times(1)).delete(requestCaptor.capture());
+
+        assertThat(requestCaptor.getValue().getId()).isEqualTo(Long.parseLong(DELETE_BOOK_ID));
     }
 }

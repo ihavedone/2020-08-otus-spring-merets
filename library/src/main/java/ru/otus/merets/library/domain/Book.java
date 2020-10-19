@@ -24,19 +24,14 @@ public class Book {
     private String caption;
 
     @BatchSize(size = 10)
-    @ManyToMany(targetEntity = Author.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Author.class, fetch = FetchType.EAGER)
     @JoinTable(name= "books_authors", joinColumns = @JoinColumn(name="book_id"),inverseJoinColumns = @JoinColumn(name="author_id"))
     private Set<Author> authors;
 
     @BatchSize(size = 10)
-    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.EAGER)
     @JoinTable(name= "books_genres", joinColumns = @JoinColumn(name="book_id"),inverseJoinColumns = @JoinColumn(name="genre_id"))
     private Set<Genre> genres;
-
-//    @BatchSize(size = 20)
-//    @OneToMany(targetEntity = Comment.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "book_id")
-//    List<Comment> comments;
 
     @Override
     public boolean equals(Object o) {
