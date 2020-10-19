@@ -53,7 +53,7 @@ class BookRepositoryJpaTest {
     @Test
     @DisplayName(" insert new book without genres and authors")
     void shouldInsertWithoutGenresAndAuthors() {
-        Book book = new Book(0L, TEST_BOOK_NAME, new HashSet<>(), new HashSet<>(), new ArrayList<>());
+        Book book = new Book(0L, TEST_BOOK_NAME, new HashSet<>(), new HashSet<>());
         bookRepository.save(book);
         assertThat(bookRepository.findById(book.getId()).get()).isEqualTo(book);
     }
@@ -72,8 +72,7 @@ class BookRepositoryJpaTest {
                         new Genre(1L, "TestGenre1"),
                         new Genre(2L, "TestGenre2"),
                         new Genre(3L, "TestGenre3")
-                )),
-                new ArrayList<>());
+                )));
         assertThat(bookRepository.findById(1L).get()).isEqualTo(book);
     }
 
@@ -96,7 +95,7 @@ class BookRepositoryJpaTest {
     void shouldUpdateBook() {
         Optional<Book> book = bookRepository.findById(ID_TO_UPDATE);
         assertThat(book.get().getCaption()).isNotEqualTo(NEW_BOOK_CAPTION);
-        Book newBook = new Book(book.get().getId(), NEW_BOOK_CAPTION, book.get().getAuthors(), book.get().getGenres(), new ArrayList<>());
+        Book newBook = new Book(book.get().getId(), NEW_BOOK_CAPTION, book.get().getAuthors(), book.get().getGenres());
         bookRepository.save(newBook);
         assertThat(bookRepository.findById(ID_TO_UPDATE).get().getCaption()).isEqualTo(NEW_BOOK_CAPTION);
     }

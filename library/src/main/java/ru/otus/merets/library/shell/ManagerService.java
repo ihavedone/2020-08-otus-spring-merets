@@ -1,17 +1,18 @@
 package ru.otus.merets.library.shell;
 
+import lombok.AllArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.otus.merets.library.service.BookService;
+import ru.otus.merets.library.service.CommentService;
 
 
 @ShellComponent
+@AllArgsConstructor
 public class ManagerService {
     private final BookService bookService;
+    private final CommentService commentService;
 
-    public ManagerService(BookService bookService) {
-        this.bookService = bookService;
-    }
 
     @ShellMethod(value = "add a new book", key = {"book-add"})
     public void addBook() {
@@ -38,14 +39,19 @@ public class ManagerService {
         bookService.updateBook();
     }
 
-    @ShellMethod(value="comment the book", key = {"book-comment-add"})
+    @ShellMethod(value="comment the book", key = {"comment-add"})
     public void commentBook(){
-        bookService.addComment();
+        commentService.addComment();
     }
 
-    @ShellMethod(value="delete comment", key = {"book-comment-delete"})
-    public void deleteBookComment(){
-        bookService.deleteComment();
+    @ShellMethod(value="delete comment", key = {"comment-delete"})
+    public void deleteComment(){
+        commentService.deleteComment();
+    }
+
+    @ShellMethod(value="show comment", key = {"comment-get"})
+    public void showComment(){
+        commentService.showComment();
     }
 
 }

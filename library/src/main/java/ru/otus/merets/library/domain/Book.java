@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,10 +33,10 @@ public class Book {
     @JoinTable(name= "books_genres", joinColumns = @JoinColumn(name="book_id"),inverseJoinColumns = @JoinColumn(name="genre_id"))
     private Set<Genre> genres;
 
-    @BatchSize(size = 20)
-    @OneToMany(targetEntity = Comment.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "book_id")
-    List<Comment> comments;
+//    @BatchSize(size = 20)
+//    @OneToMany(targetEntity = Comment.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "book_id")
+//    List<Comment> comments;
 
     @Override
     public boolean equals(Object o) {

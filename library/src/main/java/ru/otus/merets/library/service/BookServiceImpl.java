@@ -5,14 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.merets.library.domain.Author;
 import ru.otus.merets.library.domain.Book;
-import ru.otus.merets.library.domain.Comment;
 import ru.otus.merets.library.domain.Genre;
 import ru.otus.merets.library.repository.AuthorRepository;
 import ru.otus.merets.library.repository.BookRepository;
-import ru.otus.merets.library.repository.CommentRepository;
 import ru.otus.merets.library.repository.GenreRepository;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,7 +21,6 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
-    private final CommentRepository commentRepository;
 
     private Set<Author> getAuthorsViaIds() {
         authorRepository.findAll().forEach(ioService::printMessage);
@@ -50,20 +46,20 @@ public class BookServiceImpl implements BookService {
         ioService.printMessage("Enter caption:");
         String caption = ioService.getString();
 
-        Book book = new Book(0L, caption, getAuthorsViaIds(), getGenresViaIds(), new ArrayList<>());
+        Book book = new Book(0L, caption, getAuthorsViaIds(), getGenresViaIds());
         bookRepository.save(book);
     }
 
     @Transactional
     @Override
     public void deleteBook() {
-        bookRepository.delete(selectBook());
+        bookRepository.delete(select());
     }
 
     @Transactional
     @Override
     public void updateBook() {
-        Book book = selectBook();
+        Book book = select();
 
         ioService.printMessage("Enter new caption: ");
         book.setCaption( ioService.getString() );
@@ -88,28 +84,11 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void printBook() {
-        ioService.printMessage(selectBook());
+        ioService.printMessage(select());
     }
 
     @Override
-    @Transactional
-    public void addComment() {
-        Book book = selectBook();
-        ioService.printMessage("Enter your comment: ");
-        String comment = ioService.getString();
-        commentRepository.save(new Comment(0L, comment, book.getId()));
-    }
-
-    @Override
-    @Transactional
-    public void deleteComment() {
-        Book book = selectBook();
-        ioService.printMessage(commentRepository.findAllByBookId(book.getId()));
-        ioService.printMessage("Enter id's comment for destroying: ");
-        commentRepository.findById(Long.parseLong(ioService.getString())).ifPresent( commentRepository::delete);
-    }
-
-    private Book selectBook() {
+    public Book select() {
         ioService.printMessage("Enter book's id: ");
         String value = ioService.getString();
         return bookRepository.findById(

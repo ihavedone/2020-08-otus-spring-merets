@@ -20,6 +20,7 @@ public class Comment {
     @Column(name = "text")
     private String text;
 
-    @Column(name="book_id")
-    private Long book_id;
+    @ManyToOne(targetEntity = Book.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "book_id")
+    private Book book;
 }
