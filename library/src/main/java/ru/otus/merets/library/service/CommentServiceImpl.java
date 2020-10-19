@@ -30,6 +30,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void showComment() {
         commentRepository.findAll().forEach(ioService::printMessage);
         ioService.printMessage( select() );

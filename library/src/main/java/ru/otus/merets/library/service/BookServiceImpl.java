@@ -71,7 +71,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public void printListOfBooks() {
         ioService.printMessage(
                 bookRepository.findAll()
@@ -82,7 +82,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public void printBook() {
         ioService.printMessage(select());
     }
