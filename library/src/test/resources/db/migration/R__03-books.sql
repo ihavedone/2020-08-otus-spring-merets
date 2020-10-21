@@ -1,4 +1,4 @@
-INSERT INTO book (id, caption)
+INSERT INTO books (id, caption)
 VALUES (1, 'TestBook1'),
        (2, 'TestBook2'),
        (3, 'TestBook3'),
