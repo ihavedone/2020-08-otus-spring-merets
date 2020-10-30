@@ -1,5 +1,6 @@
 package ru.otus.merets.library.service;
 
+import com.google.common.collect.Sets;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +12,6 @@ import ru.otus.merets.library.repository.BookRepository;
 import ru.otus.merets.library.repository.GenreRepository;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,18 +26,18 @@ public class BookServiceImpl implements BookService {
     private Set<Author> getAuthorsViaUI() {
         authorRepository.findAll().forEach(ioService::printMessage);
         ioService.printMessage("Enter authors ids:");
-        return new HashSet<>(authorRepository.findAllById(
+        return Sets.newHashSet(authorRepository.findAllById(
                 Arrays.stream(ioService.getString().split(" "))
-                        .map(Long::valueOf)
+                        .map(String::valueOf)
                         .collect(Collectors.toList())));
     }
 
     private Set<Genre> getGenresViaUI() {
         genreRepository.findAll().forEach(ioService::printMessage);
         ioService.printMessage("Enter genres' ids:");
-        return new HashSet<>(genreRepository.findAllById(
+        return Sets.newHashSet(genreRepository.findAllById(
                 Arrays.stream(ioService.getString().split(" "))
-                        .map(Long::valueOf)
+                        .map(String::valueOf)
                         .collect(Collectors.toList())));
     }
 
@@ -47,7 +47,7 @@ public class BookServiceImpl implements BookService {
         ioService.printMessage("Enter caption:");
         String caption = ioService.getString();
 
-        Book book = new Book(0L, caption, getAuthorsViaUI(), getGenresViaUI());
+        Book book = new Book("0", caption, getAuthorsViaUI(), getGenresViaUI());
         bookRepository.save(book);
     }
 
@@ -92,7 +92,7 @@ public class BookServiceImpl implements BookService {
         ioService.printMessage("Enter book's id: ");
         String value = ioService.getString();
         return bookRepository.findById(
-                Long.parseLong(value))
+                value)
                 .orElseThrow(() -> new NoBookException(String.format("There is not a book with id %s", value)));
     }
 }

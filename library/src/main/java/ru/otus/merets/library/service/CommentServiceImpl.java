@@ -20,7 +20,7 @@ public class CommentServiceImpl implements CommentService {
         Book book = bookService.getViaUI();
         ioService.printMessage("Enter your comment: ");
         String comment = ioService.getString();
-        commentRepository.save(new Comment(0L, comment, book));
+        commentRepository.save(new Comment("0", comment, book));
     }
 
     @Override
@@ -41,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
         ioService.printMessage("Enter comment's id: ");
         String value = ioService.getString();
         return commentRepository.findById(
-                Long.parseLong(value))
+                value)
                 .orElseThrow(() -> new NoCommentException(String.format("There is not a comment with id %s", value)));
     }
 }

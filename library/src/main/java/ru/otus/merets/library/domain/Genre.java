@@ -3,21 +3,18 @@ package ru.otus.merets.library.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-@Entity
-@Table(name = "genres")
+@Document(collection = "genres")
 public class Genre {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id = 0L;
 
-    @Column(name = "name")
+    @Id
+    private String id;
+
     private String name;
 }
