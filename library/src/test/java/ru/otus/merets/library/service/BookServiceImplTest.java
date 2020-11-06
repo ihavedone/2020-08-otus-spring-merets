@@ -13,10 +13,8 @@ import java.util.HashSet;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @DisplayName("BookServiceImpl should ")
@@ -42,9 +40,9 @@ class BookServiceImplTest {
         bookService.add();
 
         ArgumentCaptor<Book> requestCaptor = ArgumentCaptor.forClass(Book.class);
-        verify(bookRepository, times(1)).save(requestCaptor.capture());
+        verify(bookRepository,atLeastOnce()).save(requestCaptor.capture());
 
-        assertThat(requestCaptor.getValue().getCaption()).isEqualTo(NEW_BOOK_CAPTION);
+        assertThat(requestCaptor.getAllValues().stream().map(Book::getCaption)).contains(NEW_BOOK_CAPTION);
     }
 
     @Test
@@ -53,16 +51,16 @@ class BookServiceImplTest {
         given(ioService.getString()).willReturn(DELETE_BOOK_ID);
         given(bookRepository.findById(any())).willReturn(
                 Optional.of(
-                        new Book(Long.parseLong(DELETE_BOOK_ID), "it does not matter", new HashSet<>(), new HashSet<>())
+                        new Book(DELETE_BOOK_ID, "it does not matter", new HashSet<>(), new HashSet<>())
                 ));
         bookService.delete();
 
-        ArgumentCaptor<Long> requestCaptorId = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<String> requestCaptorId = ArgumentCaptor.forClass(String.class);
         verify(bookRepository, times(1)).findById(requestCaptorId.capture());
 
         ArgumentCaptor<Book> requestCaptor = ArgumentCaptor.forClass(Book.class);
         verify(bookRepository, times(1)).delete(requestCaptor.capture());
 
-        assertThat(requestCaptor.getValue().getId()).isEqualTo(Long.parseLong(DELETE_BOOK_ID));
+        assertThat(requestCaptor.getValue().getId()).isEqualTo(DELETE_BOOK_ID);
     }
 }
