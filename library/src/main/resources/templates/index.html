@@ -1,0 +1,84 @@
+<html>
+<head>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <title>Library</title>
+    <!--
+    En: External scripts should me downloaded only with version tag and checksum
+    Ru: Внешние скрипты загружаем только с версионированием и хэшем,
+    мы же не хотим получить MiTM или MiTB
+     -->
+    <script src="https://code.jquery.com/jquery-3.4.0.slim.min.js"
+            integrity="sha384-7WBfQYubrFpye+dGHEeA3fHaTy/wpTFhxdjxqvK04e4orV3z+X4XC4qOX3qnkVC6"
+            crossorigin="anonymous">
+    </script>
+</head>
+<body>
+
+<nav>
+    <button onClick="javascript:document.location.reload()">Library</button>
+    <button onClick="javascript:addBookForm()">Add book</button>
+</nav>
+
+<div id="addBookForm">
+    <div><span>Caption</span><input type="text" name="caption"></div>
+    <div><span>Authors</span></div>
+    <div><span>Genres</span></div>
+    <div><button onCLick="javascript:saveBook()">Add</button></div>
+</div>
+
+<div id="root">
+</div>
+
+<script>
+    function loading(){
+        $('#root').text('Loading...')
+    }
+
+    function saveBook(){
+
+    }
+
+    function addBookForm(){
+        $('#addBookForm').show()
+    }
+
+    function getBooks() {
+        fetch("/api/book").then( $('#root').html('<div id="books"></div>') )
+            .then(books => books.json())
+            .then(books => {
+                    books.forEach( function(book) {
+                        let authors = book.authors.map((a)=>a.name).join(', ')
+                        let genres = book.genres.map((g)=>g.name).join(', ')
+                        $('#books').append("<div class='book' data-id='"+book.id+"'>"+book.caption+"<hr />"+authors+"<hr />"+genres+"</div>")
+                    } )
+                    $('.book').click( function() {
+                        let id = $(this).attr('data-id')
+                        getBook(id)
+                    })
+                }
+            )
+    }
+
+    function getBook(id) {
+        fetch("/api/book/"+id).then( $('#root').html('<div id="book"></div>') )
+            .then(book => book.json())
+            .then( function(book){
+                console.dir(book)
+                    let authors = book.authors.map((a) => a.name).join(', ')
+                    let genres = book.genres.map((g) => g.name).join(', ')
+                    $('#book').append(book.caption + "<hr />" + authors + "<hr />" + genres)
+                }
+            )
+    }
+
+    $(document).ready(function () {
+        $('#addBookForm').hide()
+        getBooks()
+    })
+</script>
+
+</body>
+</html>

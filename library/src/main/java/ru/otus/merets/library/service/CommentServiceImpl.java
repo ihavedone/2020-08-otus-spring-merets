@@ -16,11 +16,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void add() {
-        Book book = bookService.getViaUI();
+    public void add(String book_id) {
         ioService.printMessage("Enter your comment: ");
         String comment = ioService.getString();
-        commentRepository.save(new Comment("0", comment, book));
+        commentRepository.save(new Comment("0", comment, bookService.getBookById(book_id)));
     }
 
     @Override
