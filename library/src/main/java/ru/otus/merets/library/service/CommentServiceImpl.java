@@ -3,7 +3,6 @@ package ru.otus.merets.library.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.merets.library.domain.Book;
 import ru.otus.merets.library.domain.Comment;
 import ru.otus.merets.library.repository.CommentRepository;
 

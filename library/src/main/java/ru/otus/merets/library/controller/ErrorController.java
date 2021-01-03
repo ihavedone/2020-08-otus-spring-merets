@@ -17,14 +17,9 @@ import ru.otus.merets.library.controller.dto.ErrorDto;
 public class ErrorController {
     @ExceptionHandler
     public ResponseEntity<ErrorDto> error(Exception ex) {
-        log.error("Error in a contoller", ex);
+        log.error("Error in a controller: ", ex);
         return ResponseEntity
                 .status(400)
-                .body(
-                        ErrorDto.builder()
-                                .message("Error in a controller. Please, check the log")
-                                .status(false)
-                                .build()
-                );
+                .body( new ErrorDto("Error in a controller. Please, check the log") );
     }
 }

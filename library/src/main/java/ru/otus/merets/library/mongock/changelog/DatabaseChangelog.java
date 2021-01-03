@@ -21,25 +21,25 @@ public class DatabaseChangelog {
 
     @ChangeSet(order = "002", id="insertBooks", author = "ihavedone", runAlways = true)
     public void insertBooks(BookRepository bookRepository, CommentRepository commentRepository){
-        Genre comedy = new Genre("1", "Comedy");
-        Genre historical = new Genre("2", "Historical");
-        Genre drama = new Genre("3", "Drama");
-        Genre fantasy = new Genre("4", "Fantasy");
-        Genre it = new Genre("5", "IT");
-        Genre philosophy = new Genre("6", "Philosofy");
-        Genre novel = new Genre("7", "Novel");
+        Genre comedy = new Genre("Comedy");
+        Genre historical = new Genre("Historical");
+        Genre drama = new Genre( "Drama");
+        Genre fantasy = new Genre( "Fantasy");
+        Genre it = new Genre( "IT");
+        Genre philosophy = new Genre( "Philosofy");
+        Genre novel = new Genre( "Novel");
 
-        Author leoTolstoy = new Author("1", "Leo Tolstoy");
-        Author bjarneStroustrup = new Author("2", "Bjarne Stroustrup");
-        Author julianRowling = new Author("3", "Julian Rowling");
-        Author friedrichNietzsche = new Author("4", "Friedrich Nietzsche");
-        Author fyodorDostoevsky = new Author("5", "Fyodor Dostoevsky");
-        Author michaelBeck = new Author("6", "Michael Beck");
-        Author haraldBohme = new Author("7", "Harald Bohme");
-        Author mirkoDziadzka = new Author("8", "Mirko Dziadzka");
-        Author ulrichKunitz = new Author("9", "Ulrich Kunitz");
-        Author robertMagnus = new Author("10", "Robert Magnus");
-        Author dirkVerworner = new Author("11", "Dirk Verworner");
+        Author leoTolstoy = new Author( "Leo Tolstoy");
+        Author bjarneStroustrup = new Author( "Bjarne Stroustrup");
+        Author julianRowling = new Author( "Julian Rowling");
+        Author friedrichNietzsche = new Author( "Friedrich Nietzsche");
+        Author fyodorDostoevsky = new Author( "Fyodor Dostoevsky");
+        Author michaelBeck = new Author( "Michael Beck");
+        Author haraldBohme = new Author( "Harald Bohme");
+        Author mirkoDziadzka = new Author( "Mirko Dziadzka");
+        Author ulrichKunitz = new Author( "Ulrich Kunitz");
+        Author robertMagnus = new Author( "Robert Magnus");
+        Author dirkVerworner = new Author( "Dirk Verworner");
 
         Book warAndPeace = new Book(
                 "1",
