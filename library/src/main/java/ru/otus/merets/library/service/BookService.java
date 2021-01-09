@@ -2,11 +2,11 @@ package ru.otus.merets.library.service;
 
 import ru.otus.merets.library.domain.Book;
 
+import java.util.List;
+
 public interface BookService {
-    void add();
-    void delete();
-    void update();
-    void printAll();
-    void print();
-    Book getViaUI();
+    Book getBookById(String id);
+    List<Book> getAll();
+    Book save(Book book);
+    void deleteById(String id);
 }

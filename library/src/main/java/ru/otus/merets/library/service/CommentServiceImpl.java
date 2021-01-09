@@ -3,7 +3,6 @@ package ru.otus.merets.library.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.merets.library.domain.Book;
 import ru.otus.merets.library.domain.Comment;
 import ru.otus.merets.library.repository.CommentRepository;
 
@@ -16,11 +15,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void add() {
-        Book book = bookService.getViaUI();
+    public void add(String book_id) {
         ioService.printMessage("Enter your comment: ");
         String comment = ioService.getString();
-        commentRepository.save(new Comment("0", comment, book));
+        commentRepository.save(new Comment("0", comment, bookService.getBookById(book_id)));
     }
 
     @Override

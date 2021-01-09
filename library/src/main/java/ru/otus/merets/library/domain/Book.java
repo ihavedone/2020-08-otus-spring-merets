@@ -1,6 +1,7 @@
 package ru.otus.merets.library.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -12,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 @Document(collection = "books")
 public class Book {
     @Id
@@ -20,7 +22,6 @@ public class Book {
     private String caption;
 
     private Set<Author> authors;
-
 
     private Set<Genre> genres;
 
