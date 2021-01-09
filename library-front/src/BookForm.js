@@ -1,5 +1,6 @@
 import React from 'react'
 import {Redirect} from 'react-router-dom'
+import API from './ApiService'
 
 class BookForm extends React.Component {
 
@@ -18,32 +19,18 @@ class BookForm extends React.Component {
         this.saveHandler = this.saveHandler.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (typeof (this.props.match) != 'undefined' && this.props.match != null) {
             let id = this.props.match.params.id
-            this.getServerData(id)
+            let book = await API.getBook(id)
+            this.setState({
+                book_caption: book.caption,
+                book_id: book.id,
+                book_authors: book.authors,
+                book_genres: book.genres
+            })
         }
     }
-
-    getServerData(id) {
-        fetch('/api/book/' + id)
-            .then(result => result.json())
-            .then((result) => {
-                let authors = ""
-                result.authors.forEach(a => authors += a.name + ", ")
-                authors = authors.slice(0, authors.length - 2)
-                let genres = ""
-                result.genres.forEach(g => genres += g.name + ", ")
-                genres = genres.slice(0, genres.length - 2)
-                this.setState({
-                    book_caption: result.caption,
-                    book_id: result.id,
-                    book_authors: authors,
-                    book_genres: genres
-                })
-            })
-    }
-
 
     saveHandler() {
         let caption = document.getElementById("book_caption").value
@@ -53,25 +40,13 @@ class BookForm extends React.Component {
         if (genres === "") authors = null
         let id = document.getElementById("book_id").value
         let book = {"caption": caption, "authors": authors, "genres": genres, "id": id}
+        let method = 'POST'
         if (id != null) {
-            this.saveBook(book, 'PATCH')
-        } else {
-            this.saveBook(book, 'POST')
+            method = 'PATCH'
         }
-    }
-
-    saveBook(book, requiredMethod) {
-        fetch('/api/book/', {
-            method: requiredMethod,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(book)
+        API.saveBook(book, method).then(r => {
+            this.setState({redirect: true})
         })
-            .then(result => result.json())
-            .then((result) => {
-                this.setState({redirect: true})
-            })
     }
 
     handleChangeCaption(event) {
@@ -99,7 +74,7 @@ class BookForm extends React.Component {
         return (
             <div className="grid">
                 <input type="hidden" id="book_id" onChange={() => {
-                }} value={this.state.book_id}/>
+                }} value={ this.state.book_id!=null?this.state.book_id:""}/>
                 <div className="row"><span className="cell3">Caption:</span>
                     <span className="cell7"><input type="text" className="textField" id="book_caption"
                                                    onChange={this.handleChangeCaption}

@@ -1,6 +1,6 @@
 import React from 'react'
 import Book from './Book'
-import {Link} from 'react-router-dom'
+import API from './ApiService'
 
 class BookList extends React.Component {
     constructor(props) {
@@ -8,55 +8,40 @@ class BookList extends React.Component {
         this.state = {
             books: []
         }
-        this.getServerData = this.getServerData.bind(this);
         this.deleteBook = this.deleteBook.bind(this);
     }
 
-    componentDidMount() {
-        this.getServerData()
-    }
-
-    deleteBook(id) {
-        fetch('/api/book/' + id, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then((result) => {
-            this.getServerData()
+    async componentDidMount() {
+        let books = await API.getBooks()
+        this.setState({
+            books: books
         })
     }
 
-    getServerData() {
-        fetch('/api/book/')
-            .then(result => result.json())
-            .then((result) => {
-                this.setState({
-                    books: result
-                })
-            })
+    async deleteBook(id) {
+        let deleteFlag = await API.deleteBook(id)
+        if (deleteFlag) {
+            let books = await API.getBooks()
+            this.setState({
+                    books: books
+                }
+            )
+        }
     }
 
     render() {
-        return (
-            <div>
-                {this.state.books.map((book, index) => {
-                    return <div className="bookBlock">
-                        <Book key={book.id} id={book.id}
-                              caption={book.caption}
-                              authors={book.authors}
-                              genres={book.genres}
-                        />
-                        <button onClick={() => this.deleteBook(book.id)}>Delete</button>
-                        <Link to={"/edit/" + book.id}>
-                            <button>Edit</button>
-                        </Link>
-                    </div>
-                })}
-            </div>
-        );
+        return (<div>
+            {this.state.books.map((book, index) => {
+                return (
+                    <Book key={book.id} id={book.id}
+                          caption={book.caption}
+                          authors={book.authors}
+                          genres={book.genres}
+                          handlerDelete={this.deleteBook}
+                    />)
+            })}
+        </div>)
     }
-
 }
 
 export default BookList;

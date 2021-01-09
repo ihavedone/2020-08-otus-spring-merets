@@ -9,8 +9,7 @@ import {
 } from "react-router-dom";
 import BookForm from "./BookForm";
 
-class Application extends React.Component {
-    render() {
+const Application = () => {
         return (
             <Router>
                 <nav>
@@ -32,11 +31,9 @@ class Application extends React.Component {
                     </Route>
                     <Route exact path="/edit/:id" component={BookForm}>
                     </Route>
-                    )}/>
                 </Switch>
             </Router>
         );
-    }
 }
 
 export default Application;
