@@ -3,12 +3,9 @@ package ru.otus.merets.library.mongock.changelog;
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.mongodb.client.MongoDatabase;
-import ru.otus.merets.library.domain.Author;
-import ru.otus.merets.library.domain.Book;
-import ru.otus.merets.library.domain.Comment;
-import ru.otus.merets.library.domain.Genre;
+import ru.otus.merets.library.domain.*;
 import ru.otus.merets.library.repository.BookRepository;
-import ru.otus.merets.library.repository.CommentRepository;
+import ru.otus.merets.library.repository.UserRepository;
 
 import java.util.Set;
 
@@ -20,7 +17,7 @@ public class DatabaseChangelog {
     }
 
     @ChangeSet(order = "002", id="insertBooks", author = "ihavedone", runAlways = true)
-    public void insertBooks(BookRepository bookRepository, CommentRepository commentRepository){
+    public void insertBooks(BookRepository bookRepository){
         Genre comedy = new Genre("Comedy");
         Genre historical = new Genre("Historical");
         Genre drama = new Genre( "Drama");
@@ -84,14 +81,16 @@ public class DatabaseChangelog {
         bookRepository.save( harryPotter );
         bookRepository.save( goodAndEvil );
         bookRepository.save( linuxKernel );
+    }
 
-        Comment comment1 = new Comment("1", "Wow!", warAndPeace);
-        Comment comment2 = new Comment("2", "Amazing!", warAndPeace);
-        Comment comment3 = new Comment("3", "Thank you", warAndPeace);
+    @ChangeSet(order = "003", id="insertUsers", author = "ihavedone", runAlways = true)
+    public void insertUsers(UserRepository userRepository){
+        User user = new User(null,
+                "admin",
+                "$argon2id$v=19$m=65536,t=3,p=1$bmdrNWhBanRsOHJMdnNOaA$5FkuOWVnnYSamOBIE4zHfX8zfi0v/XtvFb/WkIwilJc",
+                Set.of("ADMIN"));
 
-        commentRepository.save(comment1);
-        commentRepository.save(comment2);
-        commentRepository.save(comment3);
+        userRepository.save( user );
     }
 
 }

@@ -6,5 +6,5 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class Author {
-    private String name;
+    private final String name;
 }

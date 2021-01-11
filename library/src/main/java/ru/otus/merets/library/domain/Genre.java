@@ -6,5 +6,5 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 public class Genre {
-    private String name;
+    private final String name;
 }
