@@ -1,6 +1,6 @@
 import React from 'react'
 
-class API extends React.Component {
+class API {
 
     static async getBook(id) {
         let result = await fetch('/api/book/' + id)
