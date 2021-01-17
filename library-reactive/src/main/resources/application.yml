@@ -1,0 +1,19 @@
+spring:
+  data:
+    mongodb:
+      database: library
+      port: 27017
+      host: localhost
+
+mongock:
+  runner-type: initializingbean
+  change-logs-scan-package:
+    - ru.otus.merets.library.mongock.changelog
+
+logging:
+  level:
+    ROOT: DEBUG
+
+server:
+  address: 0.0.0.0
+  port: 8080
