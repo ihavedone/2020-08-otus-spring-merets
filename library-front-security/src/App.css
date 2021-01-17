@@ -1,0 +1,96 @@
+.genreBlock{
+    border: 1px dotted gray;
+    margin: 2px 5px;
+    padding: 2px 5px;
+    display: inline-block;
+}
+
+.authorBlock{
+    border: 1px solid orange;
+    margin: 2px 5px;
+    padding: 2px 5px;
+    display: inline-block;
+}
+
+.bookBlock{
+    border-left: 3px solid black;
+    padding: 0.5em 1em;
+    margin: 1em;
+    font-size: 1em;
+}
+
+.bookBlock .bookCaption{
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #555;
+    margin: 0.5em;
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0.5em 1em;
+    padding: 0.5em 1em;
+    border: 1px solid lightgrey;
+    font-size: 1.2em;
+}
+
+nav ul li a{
+    text-decoration: none;
+    color: darkcyan;
+}
+
+nav ul li a:active{
+    color: cadetblue;
+}
+
+nav{
+    border-bottom: 1px solid gray;
+    margin-bottom: 1em;
+}
+
+body{
+    font-family: Verdana;
+    color: #555555;
+}
+
+button{
+    background-color: lightskyblue;
+    color: white;
+    padding: 0.3em 0.6em;
+    margin: 0.5em;
+    border: 1px solid dodgerblue;
+}
+
+button:disabled{
+    background: lightgray;
+}
+
+.textField{
+    border: 1px solid cadetblue;
+    border-radius: 0.2em;
+    font-size: 1em;
+    padding: 0.2em 0.4em;
+    margin: 0.5em;
+    color: #555555;
+    width: 100%;
+}
+
+.grid{
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.grid .row{
+    display: block;
+    width: 100%;
+}
+
+.grid .row .cell3{
+    width:28%;
+    display: inline-block;
+}
+.grid .row .cell7{
+    width:68%;
+    display: inline-block;
+}

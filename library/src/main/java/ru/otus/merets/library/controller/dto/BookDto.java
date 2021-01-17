@@ -24,13 +24,13 @@ public class BookDto {
                 .authors(
                         Arrays.stream(bookDto.getAuthors().split(","))
                                 .map(String::trim)
-                                .map( author -> new Author(author) )
+                                .map(Author::new)
                                 .collect(Collectors.toSet())
                 )
                 .genres(
                         Arrays.stream(bookDto.getGenres().split(","))
                                 .map(String::trim)
-                                .map( genre -> new Genre(genre) )
+                                .map(Genre::new)
                                 .collect(Collectors.toSet())
                 ).build();
     }
