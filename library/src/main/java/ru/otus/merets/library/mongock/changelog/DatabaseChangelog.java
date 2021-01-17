@@ -85,12 +85,18 @@ public class DatabaseChangelog {
 
     @ChangeSet(order = "003", id="insertUsers", author = "ihavedone", runAlways = true)
     public void insertUsers(UserRepository userRepository){
-        User user = new User(null,
+        CustomUser admin = new CustomUser(null,
                 "admin",
                 "$argon2id$v=19$m=65536,t=3,p=1$bmdrNWhBanRsOHJMdnNOaA$5FkuOWVnnYSamOBIE4zHfX8zfi0v/XtvFb/WkIwilJc",
                 Set.of("ADMIN"));
 
-        userRepository.save( user );
+        CustomUser user = new CustomUser(null,
+                "user",
+                "$argon2id$v=19$m=65536,t=3,p=1$SUZIR0pOUjg0NzM5RmpnaQ$/g70XiYJIg+aejDIejEweVqDK1+HeZK/MBuwYs8Ui2Y",
+                Set.of("USER"));
+
+        userRepository.save(admin);
+        userRepository.save(user);
     }
 
 }

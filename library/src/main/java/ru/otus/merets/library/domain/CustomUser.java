@@ -11,7 +11,7 @@ import java.util.Set;
 @Document("user")
 @Getter
 @AllArgsConstructor
-public class User {
+public class CustomUser {
     @Id
     private final ObjectId _id;
 
