@@ -1,6 +1,7 @@
 package ru.otus.merets.library.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.merets.library.controller.dto.BookDto;
 import ru.otus.merets.library.domain.Book;
@@ -14,16 +15,19 @@ import java.util.List;
 public class BookController {
     private final BookService bookService;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @GetMapping("/api/book")
     public List<Book> get() {
         return bookService.getAll();
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @GetMapping("/api/book/{id}")
     public Book get(@PathVariable("id") String id) {
         return bookService.getBookById(id);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/api/book")
     public Book save(@RequestBody BookDto bookDto) {
         return bookService.save( BookDto.fromDto(bookDto) );
@@ -34,6 +38,7 @@ public class BookController {
      * Ru: Не хочется накидывать логику (валидация, исключения) в контроллеры, но для сервиса это один и тот же метод.
      * Раздувать методы в сервисе не хочется еще больше.
      */
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PatchMapping("/api/book")
     public Book update(@RequestBody BookDto bookDto) {
         if(bookDto.getId().isEmpty() || bookDto.getId()!=null) {
@@ -42,6 +47,7 @@ public class BookController {
         throw new NoBookException("An attempt to update broken book");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/api/book/{id}")
     public void delete( @PathVariable("id") String id ){
         bookService.deleteById( id );

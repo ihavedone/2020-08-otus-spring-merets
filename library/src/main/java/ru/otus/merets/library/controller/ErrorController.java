@@ -2,6 +2,7 @@ package ru.otus.merets.library.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.otus.merets.library.controller.dto.ErrorDto;
@@ -21,5 +22,13 @@ public class ErrorController {
         return ResponseEntity
                 .status(400)
                 .body( new ErrorDto("Error in a controller. Please, check the log") );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorDto> error(AccessDeniedException ex) {
+        log.error("Action is forbidden: ", ex);
+        return ResponseEntity
+                .status(403)
+                .body( new ErrorDto("Forbidden") );
     }
 }

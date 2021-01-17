@@ -1,8 +1,10 @@
 package ru.otus.merets.library.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import ru.otus.merets.library.domain.User;
+import ru.otus.merets.library.domain.CustomUser;
 
-public interface UserRepository extends MongoRepository<User,String> {
-    User findByUsername(String username);
+import java.util.Optional;
+
+public interface UserRepository extends MongoRepository<CustomUser,String> {
+    Optional<CustomUser> findByUsername(String username);
 }
